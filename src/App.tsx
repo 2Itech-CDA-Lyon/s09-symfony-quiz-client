@@ -1,23 +1,22 @@
-import React, { useEffect, useState } from 'react';
+import React, { FC } from 'react';
+import { Quiz } from './types/api';
+import useSWR from 'swr';
+import apiFetcher from './utils/api-fetcher';
 
-const App = () => {
-  const [quizzes, setQuizzes] = useState<any>([]);
+const App: FC = () => {
+  const { data: quizzes, error } = useSWR<Quiz[], Error>(['GET', '/api/quiz'], apiFetcher);
 
-  useEffect(
-    () => {
-      fetch('http://localhost:8000/api/quiz')
-      .then(response => response.json())
-      .then(json => setQuizzes(json));
-    }, []
-  )
+  if (error) {
+    return <div>ERROR: {error.message}</div>
+  }
 
   return (
     <>
       <h2>Jouer</h2>
       <ul>
         {
-          quizzes.map(
-            (quiz: any) => <li>{quiz.title}</li>
+          quizzes?.map(
+            quiz => <li key={quiz.id}>{quiz.title}</li>
           )
         }
       </ul>
