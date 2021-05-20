@@ -7,3 +7,4 @@ export { default as FadingLoader } from './fading-loader';
 export { default as HackerNewsLoader } from './hacker-news';
 export { default as NewsList } from './news-list';
 export { default as SimpleArticle } from './simple-article';
+export { default as UpworkJobLoader } from './upwork-job-loader';

@@ -3,8 +3,7 @@ import { Alert, Button, Form, ListGroup, Spinner } from 'react-bootstrap';
 import { useHistory, useParams } from 'react-router';
 import { mutate } from 'swr';
 import { SwrLoader } from '../components';
-import { BulletList } from '../components/loaders';
-import UpworkJobLoader from '../components/loaders/upwork-job-loader';
+import { BulletList, UpworkJobLoader } from '../components/loaders';
 import { StandardLayout } from '../layouts';
 import { Answer, Question } from '../types/api';
 import HttpMethod from '../types/http-method';
@@ -48,6 +47,8 @@ const SingleQuestionPage: FC = () => {
         'Bravo, c\'était la bonne réponse!' :
         `Hé non! La bonne réponse était: ${rightAnswer.text}…`,
     });
+    // Réinitialise l'ID de la réponse choisie par l'utilisateur
+    setCurrentAnswerId(undefined);
     // S'il existe une question suivant celle à laquelle l'utilisateur vient de répondre
     if (nextQuestion) {
       // Passe la question suivante à SWR
@@ -104,7 +105,7 @@ const SingleQuestionPage: FC = () => {
             <Button 
               type="submit" 
               variant="primary"
-              disabled={sendingAnswer}
+              disabled={sendingAnswer || typeof currentAnswerId === 'undefined'}
             >
               Valider {sendingAnswer && <Spinner animation="grow" variant="light" size="sm" />}
             </Button>
