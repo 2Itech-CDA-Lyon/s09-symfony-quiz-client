@@ -7,3 +7,12 @@ export interface Quiz extends ApiResource {
   description: string;
   difficulty: number;
 }
+
+export interface Question extends ApiResource {
+  text: string;
+  order: number;
+}
+
+export interface Answer extends ApiResource {
+  text: string;
+}
