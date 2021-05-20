@@ -9,6 +9,8 @@ import { StandardLayout } from '../layouts';
 import { Answer, Question } from '../types/api';
 import HttpMethod from '../types/http-method';
 
+const { REACT_APP_API_URL } = process.env;
+
 interface FlashMessage {
   type: string;
   text: string;
@@ -34,7 +36,7 @@ const SingleQuestionPage: FC = () => {
     // Indique que la requête est en cours
     setSendingAnswer(true);
     // Envoie la requête permettant de vérifier si la réponse donnée par l'utilisateur est correcte
-    const response = await fetch(`http://localhost:8000/api/question/${id}/answer`, { method: HttpMethod.Post });
+    const response = await fetch(`${REACT_APP_API_URL}/api/question/${id}/answer`, { method: HttpMethod.Post });
     const data: { rightAnswer: Answer, nextQuestion: Question } = await response.json();
     const { rightAnswer, nextQuestion } = data;
     // Indique que la requête est terminée

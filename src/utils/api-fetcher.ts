@@ -1,5 +1,7 @@
+const { REACT_APP_API_URL } = process.env;
+
 const apiFetcher = async (method: string, uri: string) => {
-  const response = await fetch(`http://localhost:8000${uri}`, { method });
+  const response = await fetch(`${REACT_APP_API_URL}${uri}`, { method });
 
   if (!response.ok) {
     throw new Error('Error while fetching data.');
