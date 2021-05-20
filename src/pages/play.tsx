@@ -9,6 +9,8 @@ const PlayPage: FC = () => {
   return (
     <StandardLayout>
       <h1 className="mt-4 mb-4">Jouer</h1>
+
+      {/* Liste de tous les quiz disponibles */}
       <SwrLoader<Quiz[], Error> uri="/api/quiz" Loader={FadingLoader}>
         {({ data: quizzes }) => (
           <ul>
@@ -22,6 +24,7 @@ const PlayPage: FC = () => {
           </ul>
         )}
       </SwrLoader>
+
     </StandardLayout>
   );
 }
