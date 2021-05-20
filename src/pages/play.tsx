@@ -1,39 +1,28 @@
-import React, { FC } from 'react';
+import { FC } from 'react';
 import { Quiz } from '../types/api';
-import useSWR from 'swr';
-import apiFetcher from '../utils/api-fetcher';
-import { Button, Card, Container } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
+import { StandardLayout } from '../layouts';
+import { SwrLoader } from '../components';
+import { QuizPreview } from '../components/quiz';
+import { FadingLoader } from '../components/loaders';
 
 const PlayPage: FC = () => {
-  const { data: quizzes, error } = useSWR<Quiz[], Error>(['GET', '/api/quiz'], apiFetcher);
-
-  if (error) {
-    return <div>ERROR: {error.message}</div>
-  }
-
   return (
-    <Container>
-      <h1>Jouer</h1>
-      <ul>
-        {
-          quizzes?.map(
-            quiz =>
-              <li key={quiz.id}>
-                <Card>
-                  <Card.Body>
-                    <Card.Title>{quiz.title}</Card.Title>
-                    <Card.Text>{quiz.description}</Card.Text>
-                    <Link to={`/quiz/${quiz.id}`}>
-                      <Button variant="primary">En voir plus</Button>
-                    </Link>
-                  </Card.Body>
-                </Card>
-              </li>
-          )
-        }
-      </ul>
-    </Container>
+    <StandardLayout>
+      <h1 className="mt-4 mb-4">Jouer</h1>
+      <SwrLoader<Quiz[], Error> uri="/api/quiz" Loader={FadingLoader}>
+        {({ data: quizzes }) => (
+          <ul>
+            {quizzes?.map(
+              quiz => (
+                <li key={quiz.id} className="mt-4">
+                  <QuizPreview quiz={quiz} />
+                </li>
+              )
+            )}
+          </ul>
+        )}
+      </SwrLoader>
+    </StandardLayout>
   );
 }
 

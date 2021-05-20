@@ -1,24 +1,36 @@
-import React, { FC } from 'react';
-import { useRouteMatch } from 'react-router';
-import useSWR from 'swr';
-import { Quiz } from '../types/api';
-import apiFetcher from '../utils/api-fetcher';
+import { FC } from 'react';
+import { Button, Jumbotron } from 'react-bootstrap';
+import { Link, useParams } from 'react-router-dom';
+import { SwrLoader } from '../components';
+import { ButtonLoader, SimpleArticle } from '../components/loaders';
+import { StandardLayout } from '../layouts';
+import { Question, Quiz } from '../types/api';
 
 const SingleQuizPage: FC = () => {
-  const { params } = useRouteMatch<{ id: string }>();
-
-  const { data: quiz, error } = useSWR<Quiz, Error>(['GET', `/api/quiz/${params.id}`], apiFetcher);
-
-  if (error) {
-    return <div>ERROR: {error.message}</div>
-  }
-
-  if (typeof quiz === 'undefined') {
-    return <div>Loading...</div>
-  }
+  const { id } = useParams<{ id: string }>();
 
   return (
-    <div>{quiz.title}</div>
+    <StandardLayout>
+      <Jumbotron>
+        <SwrLoader<Quiz, Error> uri={`/api/quiz/${id}`} Loader={SimpleArticle}>
+          {({ data: quiz }) => (
+            <>
+            <h1>{quiz?.title}</h1>
+            <div>Difficulté: {quiz?.difficulty}</div>
+            <p>{quiz?.description}</p>
+
+            <SwrLoader<Question, Error> uri={`/api/quiz/${id}/first_question`} Loader={ButtonLoader}>
+              {({ data: firstQuestion }) => (
+                <Link to={`/question/${firstQuestion?.id}`}>
+                  <Button variant="primary">Jouer</Button>
+                </Link>
+              )}
+            </SwrLoader>
+            </>
+          )}
+        </SwrLoader>
+      </Jumbotron>
+    </StandardLayout>
   );
 }
 
