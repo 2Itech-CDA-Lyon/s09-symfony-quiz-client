@@ -52,7 +52,7 @@ const SingleQuestionPage: FC = () => {
     // S'il existe une question suivant celle à laquelle l'utilisateur vient de répondre
     if (nextQuestion) {
       // Passe la question suivante à SWR
-      mutate(`/api/question/${nextQuestion.id}`, nextQuestion);
+      mutate(['GET', `/api/question/${nextQuestion.id}`], nextQuestion);
       // Navigue vers la page correspondant à la question suivante
       history.push(`/question/${nextQuestion.id}`);
     } else {

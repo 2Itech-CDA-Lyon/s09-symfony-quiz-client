@@ -12,7 +12,7 @@ type Resource = ApiResource | ApiResource[];
 // Le composant générique prend ces valeurs en paramètres
 interface SwrLoaderProps<T extends Resource, E extends Error> {
   // Ce composant est conçu pour prendre une fonction comme enfant, au lieu de JSX
-  children: (swr: SWRResponse<T, E>) => JSX.Element;
+  children: (swr: SWRResponse<T, E>) => JSX.Element | null;
   // L'URI sur laquelle la requête doit être envoyée
   uri: string;
   // La méthode HTTP avec laquelle la requête doit être envoyée (par défaut: GET)
@@ -43,7 +43,7 @@ const SwrLoader = <T extends Resource, E extends Error>({ children, method, uri,
   }
 
   // Si la requête est en cours
-  if (typeof swr.data === 'undefined') {
+  if (typeof swr.data === 'undefined' && swr.isValidating) {
     // Affiche un loader par défaut si aucun loader personnalisé n'a été défini
     if (typeof Loader === 'undefined') {
       return <div className="d-flex justify-content-center"><Spinner animation="grow" /></div>;

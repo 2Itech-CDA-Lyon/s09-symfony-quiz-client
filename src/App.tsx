@@ -1,6 +1,6 @@
 import { FC } from 'react';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
-import { PlayPage, SingleQuestionPage, SingleQuizPage } from './pages';
+import { LoginPage, PlayPage, RegistrationPage, SingleQuestionPage, SingleQuizPage } from './pages';
 
 const App: FC = () => {
   return (
@@ -14,6 +14,12 @@ const App: FC = () => {
         </Route>
         <Route exact path="/question/:id(\d+)">
           <SingleQuestionPage />
+        </Route>
+        <Route exact path="/register">
+          <RegistrationPage />
+        </Route>
+        <Route exact path="/login">
+          <LoginPage />
         </Route>
         <Route>
           This page does not exist.
